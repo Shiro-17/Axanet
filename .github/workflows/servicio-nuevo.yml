@@ -1,0 +1,25 @@
+name: Notificación servicio nuevo
+
+on:
+  workflow_dispatch:
+    inputs:
+      cliente:
+        description: "Nombre del cliente"
+        required: true
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.CONTRASENA }}
+          subject: "Nuevo servicio creado"
+          to: "destinatario@example.com"
+          from: "notificaciones@example.com"
+          body: "Se creó un nuevo servicio: ${{ github.event.inputs.cliente }}"
+

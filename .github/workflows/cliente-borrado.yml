@@ -1,0 +1,24 @@
+name: Notificación cliente borrado
+
+on:
+  workflow_dispatch:
+    inputs:
+      cliente:
+        description: "Nombre del cliente"
+        required: true
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.CONTRASENA }}
+          subject: "Cliente borrado"
+          to: "destinatario@example.com"
+          from: "notificaciones@example.com"
+          body: "Se borro un cliente: ${{ github.event.inputs.cliente }}"
