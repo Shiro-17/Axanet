@@ -3,7 +3,7 @@ name: Notificar nuevo cliente
 on:
   push:
     paths:
-      - 'clientes.json'   # Se dispara cuando este archivo cambia
+      - 'Directorio/**'   # Se dispara cuando este archivo cambia
 
 jobs:
   notify:
