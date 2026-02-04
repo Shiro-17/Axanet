@@ -38,8 +38,10 @@ def crear_cliente():
 # Agregar servicio
 def agregar_servicio():
     nombre = input("Ingrese nombre del cliente: ").title()
-    if nombre not in clientes:
-        print("Cliente no encontrado.")
+    ruta_cliente = os.path.join(Directorio, nombre)
+    
+    if not os.path.exists(ruta_cliente):
+        print("Cliente no encontrado en el sistema.")
         return
 
     descripcion = input("Ingrese descripción del servicio: ")
