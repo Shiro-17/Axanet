@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.CORREO }}
           password: ${{ secrets.CONTRASENA }}
           subject: "Nuevo servicio creado"
-          to: "destinatario@example.com"
+          to: "arge.17@gmail.com"
           from: "notificaciones@example.com"
           body: "Se creó un nuevo servicio: ${{ github.event.inputs.cliente }}"
 
