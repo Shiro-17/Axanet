@@ -3,7 +3,7 @@ name: Notificación servicio nuevo
 on:
   workflow_dispatch:
     inputs:
-      cliente:
+      Directorio:
         description: "Nombre del cliente"
         required: true
 
