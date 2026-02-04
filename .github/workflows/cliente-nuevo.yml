@@ -3,7 +3,7 @@ name: Notificar nuevo cliente
 on:
   push:
     paths:
-      - 'Clientes/**'
+      - 'Directorio/**'
 
 jobs:
   notify-nuevo:
