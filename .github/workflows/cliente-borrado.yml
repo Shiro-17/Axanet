@@ -1,24 +1,33 @@
-name: Notificación cliente borrado
+name: Notificar cliente eliminado
 
 on:
-  workflow_dispatch:
-    inputs:
-      cliente:
-        description: "Nombre del cliente"
-        required: true
+  push:
+    paths:
+      - 'Clientes/**'
 
 jobs:
-  send_email:
+  notify-borrado:
     runs-on: ubuntu-latest
     steps:
-      - name: Enviar correo
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.CORREO }}
-          password: ${{ secrets.CONTRASENA }}
-          subject: "Cliente borrado"
-          to: "destinatario@example.com"
-          from: "notificaciones@example.com"
-          body: "Se borro un cliente: ${{ github.event.inputs.cliente }}"
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Detectar carpetas eliminadas
+        run: |
+          git fetch origin ${{ github.event.before }}
+          BORRADAS=$(git diff --name-status ${{ github.event.before }} ${{ github.sha }} | grep '^D' | awk -F'/' '{print $2}' | sort -u)
+
+          if [ -n "$BORRADAS" ]; then
+            echo "Clientes eliminados: $BORRADAS"
+            curl -X POST "https://api.resend.com/emails" \
+              -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+              -H "Content-Type: application/json" \
+              -d "{
+                \"from\": \"notificaciones@resend.dev\",
+                \"to\": \"arge.d.17@gmail.com\",
+                \"subject\": \"Cliente eliminado ❌\",
+                \"html\": \"<p>Se ha eliminado el cliente: $BORRADAS</p>\"
+              }"
+          else
+            echo "No se detectaron eliminaciones."
+          fi
