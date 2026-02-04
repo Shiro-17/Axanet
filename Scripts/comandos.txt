@@ -1,0 +1,7 @@
+Comandos para actualizar a GitHub
+git pull origin main
+
+git status
+git add .
+git commit -m
+git push origin main
