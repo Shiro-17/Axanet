@@ -1,16 +1,18 @@
 name: Notificación servicio nuevo
 
 on:
-  workflow_dispatch:
-    inputs:
-      Directorio:
-        description: "Nombre del cliente"
-        required: true
+  push:
+    paths:
+      - 'Directorio/**/servicios.txt'  # Se activa SOLO cuando editas o creas un servicios.txt
+  workflow_dispatch:                  # Mantienes el botón manual por si acaso
 
 jobs:
   send_email:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
       - name: Enviar correo
         uses: dawidd6/action-send-mail@v3
         with:
@@ -18,8 +20,10 @@ jobs:
           server_port: 465
           username: ${{ secrets.CORREO }}
           password: ${{ secrets.CONTRASENA }}
-          subject: "Nuevo servicio creado"
+          subject: "🔄 Servicio Actualizado en Axanet"
           to: "arge.d.17@gmail.com"
-          from: "notificaciones@example.com"
-          body: "Se creó un nuevo servicio: ${{ github.event.inputs.cliente }}"
-
+          from: "Sistema de Gestión"
+          body: |
+            Se ha registrado una actualización en el archivo de servicios.
+            
+            Puedes revisar los detalles del nuevo servicio entrando a tu repositorio en GitHub.
