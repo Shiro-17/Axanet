@@ -3,23 +3,31 @@ name: Notificar nuevo cliente
 on:
   push:
     paths:
-      - 'Directorio/**'   # Se dispara cuando este archivo cambia
+      - 'Clientes/**'
 
 jobs:
-  notify:
+  notify-nuevo:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Enviar correo con Resend
+      - name: Detectar carpetas nuevas
         run: |
-          curl -X POST "https://api.resend.com/emails" \
-          -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
-          -H "Content-Type: application/json" \
-          -d '{
-            "from": "notificaciones@resend.dev",
-            "to": "arge.d.17@gmail.com",
-            "subject": "Nuevo cliente creado 🚀",
-            "html": "<p>Se ha agregado un nuevo cliente al sistema.</p>"
-          }'
+          git fetch origin ${{ github.event.before }}
+          NUEVAS=$(git diff --name-status ${{ github.event.before }} ${{ github.sha }} | grep '^A' | awk -F'/' '{print $2}' | sort -u)
+
+          if [ -n "$NUEVAS" ]; then
+            echo "Clientes nuevos: $NUEVAS"
+            curl -X POST "https://api.resend.com/emails" \
+              -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+              -H "Content-Type: application/json" \
+              -d "{
+                \"from\": \"notificaciones@resend.dev\",
+                \"to\": \"arge.d.17@gmail.com\",
+                \"subject\": \"Nuevo cliente creado 🚀\",
+                \"html\": \"<p>Se ha agregado el cliente: $NUEVAS</p>\"
+              }"
+          else
+            echo "No se detectaron clientes nuevos."
+          fi
