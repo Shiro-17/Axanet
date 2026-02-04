@@ -3,7 +3,7 @@ name: Notificar cliente eliminado
 on:
   push:
     paths:
-      - 'Clientes/**'
+      - 'Directorio/**'
 
 jobs:
   notify-borrado:
