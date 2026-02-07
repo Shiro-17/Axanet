@@ -1,0 +1,22 @@
+name: Notificar consulta de cliente
+
+on:
+  workflow_dispatch:   # Se ejecuta manualmente desde la pestaña Actions
+
+jobs:
+  notify-consulta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.CONTRASENA }}
+          subject: "📖 Consulta de cliente realizada"
+          to: "arge.d.17@gmail.com"
+          from: "Sistema de Gestión"
+          body: |
+            Se ha consultado información de un cliente.
+            Este evento fue registrado manualmente.
