@@ -1,0 +1,27 @@
+name: Notificar cliente modificado
+
+on:
+  push:
+    paths:
+      - 'Directorio/**/archivo_cliente.txt'
+
+jobs:
+  notify-modificado:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.CONTRASENA }}
+          subject: "✏️ Cliente modificado en Axanet"
+          to: "arge.d.17@gmail.com"
+          from: "Sistema de Gestión"
+          body: |
+            Se ha modificado un cliente en el sistema.
+            Revisa el archivo actualizado en el repositorio.
