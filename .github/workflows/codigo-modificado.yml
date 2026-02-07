@@ -1,0 +1,24 @@
+name: Notificar modificación de código
+
+on:
+  push:
+    paths:
+      - '**.py'
+
+jobs:
+  notify-codigo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.CONTRASENA }}
+          subject: "💻 Código modificado en Axanet"
+          to: "arge.d.17@gmail.com"
+          from: "Sistema de Gestión"
+          body: |
+            Se ha realizado una modificación en el código fuente.
+            Revisa los cambios en GitHub.
