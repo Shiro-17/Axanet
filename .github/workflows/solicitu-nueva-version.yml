@@ -1,0 +1,22 @@
+name: Solicitar nuevas funciones
+
+on:
+  workflow_dispatch
+
+jobs:
+  solicitar-funcion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.CONTRASENA }}
+          subject: "🚀 Solicitud de nueva función"
+          to: "arge.d.17@gmail.com"
+          from: "Sistema de Gestión"
+          body: |
+            Se ha solicitado una nueva función para la aplicación.
+            Documenta y planifica su desarrollo.
