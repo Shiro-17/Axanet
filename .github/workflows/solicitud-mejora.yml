@@ -1,0 +1,22 @@
+name: Solicitar mejoras de la app
+
+on:
+  workflow_dispatch
+
+jobs:
+  solicitar-mejora:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.CONTRASENA }}
+          subject: "✨ Solicitud de mejora en la app"
+          to: "arge.d.17@gmail.com"
+          from: "Sistema de Gestión"
+          body: |
+            Se ha solicitado una mejora en la aplicación.
+            Revisa el repositorio para planificar la implementación.
