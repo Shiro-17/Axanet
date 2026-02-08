@@ -7,16 +7,16 @@ jobs:
   solicitar-funcion:
     runs-on: ubuntu-latest
     steps:
-      - name: Enviar correo
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.CORREO }}
-          password: ${{ secrets.CONTRASENA }}
-          subject: "🚀 Solicitud de nueva función"
-          to: "arge.d.17@gmail.com"
-          from: "Sistema de Gestión"
-          body: |
-            Se ha solicitado una nueva función para la aplicación.
-            Documenta y planifica su desarrollo.
+      - name: Enviar correo con Resend
+        run: |
+          curl -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d @- <<EOF
+{
+  "from": "notificaciones@tudominio.com",
+  "to": "arge.d.17@gmail.com",
+  "subject": "🚀 Solicitud de nueva función",
+  "html": "<p>Se ha solicitado una nueva función para la aplicación.</p><p>Documenta y planifica su desarrollo.</p>"
+}
+EOF
