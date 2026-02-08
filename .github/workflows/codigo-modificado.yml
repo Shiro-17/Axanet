@@ -3,22 +3,31 @@ name: Notificar modificación de código
 on:
   push:
     paths:
-      - '**.py'
+      - 'script/**/*.py'
 
 jobs:
   notify-codigo:
     runs-on: ubuntu-latest
     steps:
-      - name: Enviar correo
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.CORREO }}
-          password: ${{ secrets.CONTRASENA }}
-          subject: "💻 Código modificado en Axanet"
-          to: "arge.d.17@gmail.com"
-          from: "Sistema de Gestión"
-          body: |
-            Se ha realizado una modificación en el código fuente.
-            Revisa los cambios en GitHub.
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Detectar cambios en código
+        run: |
+          CAMBIOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.py$')
+          if [ -n "$CAMBIOS" ]; then
+            echo "Archivos modificados: $CAMBIOS"
+            curl -X POST "https://api.resend.com/emails" \
+              -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+              -H "Content-Type: application/json" \
+              -d @- <<EOF
+{
+  "from": "notificaciones@tudominio.com",
+  "to": "arge.d.17@gmail.com",
+  "subject": "💻 Código modificado en Axanet",
+  "html": "<p>Se han modificado los siguientes archivos:</p><pre>$CAMBIOS</pre>"
+}
+EOF
+          else
+            echo "No se detectaron cambios en archivos .py."
+          fi
