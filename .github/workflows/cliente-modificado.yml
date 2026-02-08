@@ -21,7 +21,7 @@ jobs:
               -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
               -H "Content-Type: application/json" \
               -d '{
-                "from": "notificaciones@tudominio.com",
+                "from": "notificaciones@resend.dev",
                 "to": "arge.d.17@gmail.com",
                 "subject": "✏️ Cliente modificado en Axanet",
                 "html": "<p>Se ha modificado un cliente en el sistema.</p><p>Archivo actualizado: '"$CAMBIOS"'</p>"
