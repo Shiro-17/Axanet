@@ -12,11 +12,9 @@ jobs:
           curl -X POST "https://api.resend.com/emails" \
             -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d @- <<EOF
-{
-  "from": "notificaciones@tudominio.com",
-  "to": "arge.d.17@gmail.com",
-  "subject": "✨ Solicitud de mejora en la app",
-  "html": "<p>Se ha solicitado una mejora en la aplicación.</p><p>Revisa el repositorio para planificar la implementación.</p>"
-}
-EOF
+            -d '{
+              "from": "notificaciones@tudominio.com",
+              "to": "arge.d.17@gmail.com",
+              "subject": "✨ Solicitud de mejora en la app",
+              "html": "<p>Se ha solicitado una mejora en la aplicación.</p><p>Revisa el repositorio para planificar la implementación.</p>"
+            }'
