@@ -20,14 +20,12 @@ jobs:
             curl -X POST "https://api.resend.com/emails" \
               -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
               -H "Content-Type: application/json" \
-              -d @- <<EOF
-{
-  "from": "notificaciones@tudominio.com",
-  "to": "arge.d.17@gmail.com",
-  "subject": "💻 Código modificado en Axanet",
-  "html": "<p>Se han modificado los siguientes archivos:</p><pre>$CAMBIOS</pre>"
-}
-EOF
+              -d '{
+                "from": "notificaciones@resend.dev",
+                "to": "arge.d.17@gmail.com",
+                "subject": "💻 Código modificado en Axanet",
+                "html": "<p>Se han modificado los siguientes archivos:</p><pre>'"$CAMBIOS"'</pre>"
+              }'
           else
             echo "No se detectaron cambios en archivos .py."
           fi
