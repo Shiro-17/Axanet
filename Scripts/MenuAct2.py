@@ -17,6 +17,7 @@ def menu():
         print("4) Listar clientes")
         print("5) Eliminar cliente")
         print("6) Salir")
+        print("modificado codigo")
 
         opcion = input("Opción: ")
 
@@ -36,4 +37,5 @@ def menu():
             print("Opción inválida.")
 
 if __name__ == "__main__":
+
     menu()
